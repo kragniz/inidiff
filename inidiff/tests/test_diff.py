@@ -23,6 +23,11 @@ cat=tim
 dog=bob
 '''
 
+INI_6 = '''[DEFAULT]
+cat=tim
+dog=
+'''
+
 
 class TestDiff(unittest.TestCase):
     """Test diffs diff things."""
@@ -51,3 +56,13 @@ class TestDiff(unittest.TestCase):
     def test_extra_option_reversed(self):
         diffs = inidiff.diff(INI_5, INI_4)
         self.assertEqual(1, len(diffs))
+
+    def test_unset_option(self):
+        diffs = inidiff.diff(INI_5, INI_6)
+        self.assertEqual(1, len(diffs))
+        self.assertEqual('', diffs[0][1][2])
+
+    def test_unset_option_reversed(self):
+        diffs = inidiff.diff(INI_6, INI_5)
+        self.assertEqual(1, len(diffs))
+        self.assertEqual('', diffs[0][0][2])

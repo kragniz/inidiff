@@ -12,6 +12,13 @@ class PermissiveConfigParser(configparser.SafeConfigParser):
         else:
             return []
 
+    def get(self, *args, **kwargs):
+        try:
+            value = configparser.SafeConfigParser.get(self, *args, **kwargs)
+        except configparser.NoOptionError:
+            value = None
+        return value
+
 
 def conf_from_str(conf_str):
     """Return a ConfigParser object from a string."""

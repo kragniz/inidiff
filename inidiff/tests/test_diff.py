@@ -40,14 +40,12 @@ class TestDiff(unittest.TestCase):
 
     def test_number_is_different(self):
         diffs = inidiff.diff(INI_1, INI_2)
-        first, second = diffs[0]
-        self.assertEqual('number', first[1])
+        self.assertEqual('number', diffs[0].first.option)
 
     def test_default_section(self):
         diffs = inidiff.diff(INI_3, INI_4)
-        first, second = diffs[0]
         self.assertTrue(len(diffs) > 0)
-        self.assertEqual('DEFAULT', first[0])
+        self.assertEqual('DEFAULT', diffs[0].first.section)
 
     def test_extra_option(self):
         diffs = inidiff.diff(INI_4, INI_5)
@@ -60,9 +58,9 @@ class TestDiff(unittest.TestCase):
     def test_unset_option(self):
         diffs = inidiff.diff(INI_5, INI_6)
         self.assertEqual(1, len(diffs))
-        self.assertEqual('', diffs[0][1][2])
+        self.assertEqual('', diffs[0].second.value)
 
     def test_unset_option_reversed(self):
         diffs = inidiff.diff(INI_6, INI_5)
         self.assertEqual(1, len(diffs))
-        self.assertEqual('', diffs[0][0][2])
+        self.assertEqual('', diffs[0].first.value)

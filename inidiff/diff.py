@@ -1,5 +1,11 @@
+from collections import namedtuple
+
 from six.moves import cStringIO
 import six.moves.configparser as configparser
+
+
+Diff = namedtuple('Diff', 'first, second')
+Option = namedtuple('Option', 'section, option, value')
 
 
 class PermissiveConfigParser(configparser.SafeConfigParser):
@@ -43,7 +49,9 @@ def diff(first, second):
         f = conf_first.get(section, option)
         s = conf_second.get(section, option)
         if f != s:
-            diffs.append(((section, option, f), (section, option, s)))
+            diff = Diff(Option(section, option, f),
+                        Option(section, option, s))
+            diffs.append(diff)
 
     sections = set(conf_first.sections() + conf_second.sections())
     for section in sections:
@@ -53,6 +61,8 @@ def diff(first, second):
             f = conf_first.get(section, option)
             s = conf_second.get(section, option)
             if f != s:
-                diffs.append(((section, option, f), (section, option, s)))
+                diff = Diff(Option(section, option, f),
+                            Option(section, option, s))
+                diffs.append(diff)
 
     return diffs

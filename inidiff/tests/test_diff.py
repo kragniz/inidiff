@@ -10,6 +10,14 @@ INI_2 = '''[test]
 number=20
 '''
 
+INI_3 = '''[DEFAULT]
+cat=alphie
+'''
+
+INI_4 = '''[DEFAULT]
+cat=tim
+'''
+
 
 class TestDiff(unittest.TestCase):
     """Test diffs diff things."""
@@ -24,3 +32,9 @@ class TestDiff(unittest.TestCase):
         diffs = inidiff.diff(INI_1, INI_2)
         first, second = diffs[0]
         self.assertEqual('number', first[1])
+
+    def test_default_section(self):
+        diffs = inidiff.diff(INI_3, INI_4)
+        first, second = diffs[0]
+        self.assertTrue(len(diffs) > 0)
+        self.assertEqual('DEFAULT', first[0])

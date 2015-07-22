@@ -29,6 +29,15 @@ def diff(first, second):
 
     diffs = []
 
+    default_options = set(list(conf_first.defaults().keys()) +
+                          list(conf_second.defaults().keys()))
+    for option in default_options:
+        section = 'DEFAULT'
+        f = conf_first.get(section, option)
+        s = conf_second.get(section, option)
+        if f != s:
+            diffs.append(((section, option, f), (section, option, s)))
+
     sections = set(conf_first.sections() + conf_second.sections())
     for section in sections:
         options = set(conf_first.options(section) +
@@ -38,14 +47,5 @@ def diff(first, second):
             s = conf_second.get(section, option)
             if f != s:
                 diffs.append(((section, option, f), (section, option, s)))
-
-    default_options = set(list(conf_first.defaults().keys()) +
-                          list(conf_second.defaults().keys()))
-    for option in default_options:
-        section = 'DEFAULT'
-        f = conf_first.get(section, option)
-        s = conf_second.get(section, option)
-        if f != s:
-            diffs.append(((section, option, f), (section, option, s)))
 
     return diffs

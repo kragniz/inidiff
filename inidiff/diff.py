@@ -35,6 +35,15 @@ def conf_from_str(conf_str):
     return parser
 
 
+def check_option(conf_first, conf_second, section, option):
+    """Return a Diff namedtuple if the option differers between configs."""
+    first = conf_first.get(section, option)
+    second = conf_second.get(section, option)
+    if first != second:
+        return Diff(Option(section, option, first),
+                    Option(section, option, second))
+
+
 def diff(first, second):
     """Diff two ini files."""
     conf_first = conf_from_str(first)
@@ -46,11 +55,8 @@ def diff(first, second):
                           list(conf_second.defaults().keys()))
     for option in default_options:
         section = 'DEFAULT'
-        f = conf_first.get(section, option)
-        s = conf_second.get(section, option)
-        if f != s:
-            diff = Diff(Option(section, option, f),
-                        Option(section, option, s))
+        diff = check_option(conf_first, conf_second, section, option)
+        if diff is not None:
             diffs.append(diff)
 
     sections = set(conf_first.sections() + conf_second.sections())
@@ -58,11 +64,8 @@ def diff(first, second):
         options = set(conf_first.options(section) +
                       conf_second.options(section))
         for option in options:
-            f = conf_first.get(section, option)
-            s = conf_second.get(section, option)
-            if f != s:
-                diff = Diff(Option(section, option, f),
-                            Option(section, option, s))
+            diff = check_option(conf_first, conf_second, section, option)
+            if diff is not None:
                 diffs.append(diff)
 
     return diffs

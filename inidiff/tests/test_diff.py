@@ -43,6 +43,15 @@ bird=tweet
 cow=moo
 '''
 
+INI_9 = '''[say]
+dog=woof
+cat=nyaa~
+mouse=squeak
+bird=tweet
+kitty=nyaaaaa~
+cow=moo
+'''
+
 
 class TestDiff(unittest.TestCase):
     """Test diffs diff things."""
@@ -83,3 +92,19 @@ class TestDiff(unittest.TestCase):
     def test_multiple_added(self):
         diffs = inidiff.diff(INI_7, INI_8)
         self.assertEqual(3, len(diffs))
+
+    def test_multiple_added_and_changed(self):
+        diffs = inidiff.diff(INI_8, INI_9)
+        self.assertEqual(3, len(diffs))
+        for d in diffs:
+            if d.first.option == 'cat':
+                self.assertEqual('meow', d.first.value)
+                self.assertEqual('nyaa~', d.second.value)
+
+            if d.first.option == 'kitty':
+                self.assertEqual(None, d.first.value)
+                self.assertEqual('nyaaaaa~', d.second.value)
+
+            if d.first.option == 'fox':
+                self.assertEqual('doo', d.first.value)
+                self.assertEqual(None, d.second.value)

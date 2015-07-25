@@ -28,6 +28,21 @@ cat=tim
 dog=
 '''
 
+INI_7 = '''[say]
+dog=woof
+cat=meow
+bird=tweet
+'''
+
+INI_8 = '''[say]
+dog=woof
+cat=meow
+fox=doo
+mouse=squeak
+bird=tweet
+cow=moo
+'''
+
 
 class TestDiff(unittest.TestCase):
     """Test diffs diff things."""
@@ -64,3 +79,7 @@ class TestDiff(unittest.TestCase):
         diffs = inidiff.diff(INI_6, INI_5)
         self.assertEqual(1, len(diffs))
         self.assertEqual('', diffs[0].first.value)
+
+    def test_multiple_added(self):
+        diffs = inidiff.diff(INI_7, INI_8)
+        self.assertEqual(3, len(diffs))

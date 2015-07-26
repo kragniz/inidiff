@@ -46,8 +46,10 @@ def format_output(first, second, color=True):
 def main():
     """Run the main CLI."""
     parser = argparse.ArgumentParser()
-    parser.add_argument('first', type=argparse.FileType('r'))
-    parser.add_argument('second', type=argparse.FileType('r'))
+    parser.add_argument('first', type=argparse.FileType('r'),
+                        help='First ini file')
+    parser.add_argument('second', type=argparse.FileType('r'),
+                        help='Second ini file')
     args = parser.parse_args()
 
     first = args.first.read()

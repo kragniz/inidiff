@@ -13,7 +13,14 @@ setuptools.setup(
 
     packages=setuptools.find_packages(),
 
-    install_requires=[],
+    install_requires=[
+        'six',
+        'ordered-set'
+    ],
+
+    entry_points = {
+        'console_scripts': ['inidiff=inidiff:main'],
+    },
 
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',

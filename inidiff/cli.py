@@ -1,8 +1,9 @@
 from __future__ import print_function
 
-from . import diff
-
 import argparse
+import sys
+
+from . import diff
 
 
 RED = '\033[1;31m'
@@ -52,4 +53,8 @@ def main():
     first = args.first.read()
     second = args.second.read()
 
-    print(format_output(first, second), end='')
+    out = format_output(first, second)
+    print(out, end='')
+
+    if out:
+        sys.exit(1)

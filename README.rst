@@ -5,7 +5,7 @@ inidiff
    :target: https://travis-ci.org/kragniz/inidiff
    :alt: Latest Travis CI build status
 
-Find the differences between two ini config files
+Find the differences between two ini config files.
 
 Usage
 -----

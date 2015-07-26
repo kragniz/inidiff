@@ -51,7 +51,7 @@ class TestCli(unittest.TestCase):
         self.assertTrue('thing' in s)
 
     def test_formatting_output_value_changed(self):
-        s = inidiff.cli.format_output(A, B)
+        s = inidiff.cli.format_output(A, B, color=False)
         self.assertTrue('-thing=b\n'
                         '+thing=c''' in s)
 
@@ -61,22 +61,22 @@ class TestCli(unittest.TestCase):
         self.assertTrue('+thing=''' not in s)
 
     def test_formatting_output_value_added(self):
-        s = inidiff.cli.format_output(C, D)
+        s = inidiff.cli.format_output(C, D, color=False)
         self.assertTrue('+two=2''' in s)
         self.assertTrue('-two=''' not in s)
         self.assertTrue('test=''' not in s)
 
     def test_formatting_section_with_one_change(self):
-        s = inidiff.cli.format_output(C, D)
+        s = inidiff.cli.format_output(C, D, color=False)
         print(s)
         self.assertTrue('[hello]\n+two=2''' in s)
         self.assertTrue('-two=''' not in s)
         self.assertTrue('test=''' not in s)
 
     def test_formatting_section_in_order(self):
-        s = inidiff.cli.format_output(D, E)
-        self.assertTrue('[hello]\n+three=3\n+four=4\n+five=5''' in s)
+        s = inidiff.cli.format_output(D, E, color=False)
+        self.assertTrue('[hello]\n+three=3\n+four=4''' in s)
 
     def test_formatting_new_section(self):
-        s = inidiff.cli.format_output(E, F)
-        self.assertTrue('[hello]\n+five=5''' in s)
+        s = inidiff.cli.format_output(E, F, color=False)
+        self.assertTrue('[goodbye]\n+five=5''' in s)

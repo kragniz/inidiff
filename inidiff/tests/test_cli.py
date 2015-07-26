@@ -16,6 +16,11 @@ C = '''[hello]
 test=a
 '''
 
+D = '''[hello]
+test=a
+two=2
+'''
+
 
 class TestCli(unittest.TestCase):
     """Test the CLI things."""
@@ -35,6 +40,11 @@ class TestCli(unittest.TestCase):
 
     def test_formatting_output_value_removed(self):
         s = inidiff.cli.format_output(B, C)
-        print(s)
         self.assertTrue('-thing=c''' in s)
         self.assertTrue('+thing=''' not in s)
+
+    def test_formatting_output_value_added(self):
+        s = inidiff.cli.format_output(C, D)
+        self.assertTrue('+two=2''' in s)
+        self.assertTrue('-two=''' not in s)
+        self.assertTrue('test=''' not in s)

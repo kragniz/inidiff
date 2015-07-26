@@ -21,6 +21,14 @@ test=a
 two=2
 '''
 
+E = '''[hello]
+test=a
+two=2
+three=3
+four=4
+five=5
+'''
+
 
 class TestCli(unittest.TestCase):
     """Test the CLI things."""
@@ -48,3 +56,14 @@ class TestCli(unittest.TestCase):
         self.assertTrue('+two=2''' in s)
         self.assertTrue('-two=''' not in s)
         self.assertTrue('test=''' not in s)
+
+    def test_formatting_section_with_one_change(self):
+        s = inidiff.cli.format_output(C, D)
+        print(s)
+        self.assertTrue('[hello]\n+two=2''' in s)
+        self.assertTrue('-two=''' not in s)
+        self.assertTrue('test=''' not in s)
+
+    def test_formatting_section_in_order(self):
+        s = inidiff.cli.format_output(D, E)
+        self.assertTrue('[hello]\n+three=3\n+four=4\n+five=5''' in s)

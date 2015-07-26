@@ -2,6 +2,7 @@ from collections import namedtuple
 
 from six.moves import cStringIO
 import six.moves.configparser as configparser
+from ordered_set import OrderedSet
 
 
 Diff = namedtuple('Diff', 'first, second')
@@ -51,21 +52,21 @@ def diff(first, second):
 
     diffs = []
 
-    default_options = set(list(conf_first.defaults().keys()) +
-                          list(conf_second.defaults().keys()))
+    default_options = OrderedSet(list(conf_first.defaults().keys()) +
+                                 list(conf_second.defaults().keys()))
     for option in default_options:
         section = 'DEFAULT'
         diff = check_option(conf_first, conf_second, section, option)
         if diff is not None:
             diffs.append(diff)
 
-    sections = set(conf_first.sections() + conf_second.sections())
+    sections = OrderedSet(conf_first.sections() + conf_second.sections())
     for section in sections:
-        options = set(conf_first.options(section) +
-                      conf_second.options(section))
+        options = OrderedSet(conf_first.options(section) +
+                             conf_second.options(section))
         for option in options:
             diff = check_option(conf_first, conf_second, section, option)
             if diff is not None:
                 diffs.append(diff)
 
-    return sorted(diffs, key=lambda t: t.first.section)
+    return diffs

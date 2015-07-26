@@ -14,8 +14,10 @@ def format_output(first, second):
 
     out = ''
     for d in diffs:
-        out += format_option(d.first)
-        out += format_option(d.second)
+        if d.first.value is not None:
+            out += '-' + format_option(d.first)
+        if d.second.value is not None:
+            out += '+' + format_option(d.second)
 
     return out
 

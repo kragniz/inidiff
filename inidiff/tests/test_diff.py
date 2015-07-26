@@ -52,6 +52,13 @@ kitty=nyaaaaa~
 cow=moo
 '''
 
+INI_10 = '''[say]
+dog=woof
+
+[new]
+hello=hi
+'''
+
 
 class TestDiff(unittest.TestCase):
     """Test diffs diff things."""
@@ -108,3 +115,7 @@ class TestDiff(unittest.TestCase):
             if d.first.option == 'fox':
                 self.assertEqual('doo', d.first.value)
                 self.assertEqual(None, d.second.value)
+
+    def test_new_section(self):
+        diffs = inidiff.diff(INI_9, INI_10)
+        self.assertEqual(6, len(diffs))

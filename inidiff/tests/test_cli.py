@@ -26,6 +26,15 @@ test=a
 two=2
 three=3
 four=4
+'''
+
+F = '''[hello]
+test=a
+two=2
+three=3
+four=4
+
+[goodbye]
 five=5
 '''
 
@@ -67,3 +76,7 @@ class TestCli(unittest.TestCase):
     def test_formatting_section_in_order(self):
         s = inidiff.cli.format_output(D, E)
         self.assertTrue('[hello]\n+three=3\n+four=4\n+five=5''' in s)
+
+    def test_formatting_new_section(self):
+        s = inidiff.cli.format_output(E, F)
+        self.assertTrue('[hello]\n+five=5''' in s)

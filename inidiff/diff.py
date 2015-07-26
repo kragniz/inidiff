@@ -22,7 +22,7 @@ class PermissiveConfigParser(configparser.SafeConfigParser):
     def get(self, *args, **kwargs):
         try:
             value = configparser.SafeConfigParser.get(self, *args, **kwargs)
-        except configparser.NoOptionError:
+        except (configparser.NoOptionError, configparser.NoSectionError):
             value = None
         return value
 

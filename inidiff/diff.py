@@ -68,4 +68,4 @@ def diff(first, second):
             if diff is not None:
                 diffs.append(diff)
 
-    return diffs
+    return sorted(diffs, key=lambda t: t.first.section)

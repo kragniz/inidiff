@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from . import diff
 
 import argparse
@@ -25,8 +27,11 @@ def format_output(first, second):
 def main():
     """Run the main CLI."""
     parser = argparse.ArgumentParser()
-    parser.add_argument('first')
-    parser.add_argument('second')
+    parser.add_argument('first', type=argparse.FileType('r'))
+    parser.add_argument('second', type=argparse.FileType('r'))
     args = parser.parse_args()
 
-    print(format_output(args.first, args.second))
+    first = args.first.read()
+    second = args.second.read()
+
+    print(format_output(first, second), end='')

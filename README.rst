@@ -10,13 +10,19 @@ Find the differences between two ini config files.
 Usage
 -----
 
+.. code-block:: bash
+
+    $ inidiff some_file.ini some_newer_file.ini
+    [hello]
+    -thing=b
+    +thing=c
+    [df]
+    -dfd=fd
+
+
 Installation
 ------------
 
-Licence
--------
+.. code-block:: bash
 
-Authors
--------
-
-`inidiff` was written by `Louis Taylor <louis@kragniz.eu>`_.
+    $ pip install inidiff

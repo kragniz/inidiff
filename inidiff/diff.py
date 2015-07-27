@@ -9,19 +9,19 @@ Diff = namedtuple('Diff', 'first, second')
 Option = namedtuple('Option', 'section, option, value')
 
 
-class PermissiveConfigParser(configparser.SafeConfigParser):
-    """A SafeConfigParser that returns empty instead of erroring."""
+class PermissiveConfigParser(configparser.RawConfigParser):
+    """A RawConfigParser that returns empty instead of erroring."""
 
     def options(self, section):
         if self.has_section(section):
             # old style python classes are dumb
-            return configparser.SafeConfigParser.options(self, section)
+            return configparser.RawConfigParser.options(self, section)
         else:
             return []
 
     def get(self, *args, **kwargs):
         try:
-            value = configparser.SafeConfigParser.get(self, *args, **kwargs)
+            value = configparser.RawConfigParser.get(self, *args, **kwargs)
         except (configparser.NoOptionError, configparser.NoSectionError):
             value = None
         return value

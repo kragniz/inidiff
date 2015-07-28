@@ -71,6 +71,14 @@ dog=woof
 cow=hi
 '''
 
+INI_13 = '''[upper]
+hello=Hi
+'''
+
+INI_14 = '''[upper]
+hello=hi
+'''
+
 
 class TestDiff(unittest.TestCase):
     """Test diffs diff things."""
@@ -143,3 +151,11 @@ class TestDiff(unittest.TestCase):
         self.assertEqual(2, len(diffs))
         self.assertEqual(None, diffs[0].first.value)
         self.assertEqual('hi', diffs[0].second.value)
+
+    def test_ignore_case(self):
+        diffs = inidiff.diff(INI_13, INI_14, ignore_case=True)
+        self.assertEqual(0, len(diffs))
+
+    def test_do_not_ignore_case(self):
+        diffs = inidiff.diff(INI_13, INI_14)
+        self.assertEqual(1, len(diffs))

@@ -16,9 +16,9 @@ def format_option(opt):
     return '{}={}\n'.format(opt.option, opt.value)
 
 
-def format_output(first, second, color=True):
+def format_output(first, second, color=True, ignore_case=False):
     """Return a string showing the differences between two ini strings."""
-    diffs = diff(first, second)
+    diffs = diff(first, second, ignore_case=ignore_case)
 
     sections = set()
     out = ''
@@ -50,12 +50,14 @@ def main():
                         help='First ini file')
     parser.add_argument('second', type=argparse.FileType('r'),
                         help='Second ini file')
+    parser.add_argument('-i', '--ignore-case', action='store_true',
+                        help='ignore case for values')
     args = parser.parse_args()
 
     first = args.first.read()
     second = args.second.read()
 
-    out = format_output(first, second)
+    out = format_output(first, second, ignore_case=args.ignore_case)
     print(out, end='')
 
     if out:

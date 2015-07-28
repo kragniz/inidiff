@@ -39,16 +39,32 @@ def conf_from_str(conf_str):
     return parser
 
 
-def check_option(conf_first, conf_second, section, option):
+def _lower_or_none(string):
+    try:
+        return string.lower()
+    except AttributeError:
+        return None
+
+
+def check_option(conf_first, conf_second, section, option, ignore_case=False):
     """Return a Diff namedtuple if the option differers between configs."""
     first = conf_first.get(section, option)
     second = conf_second.get(section, option)
-    if first != second:
+
+    if ignore_case is True:
+        first_lower = _lower_or_none(first)
+        second_lower = _lower_or_none(second)
+
+        different = (first_lower != second_lower)
+    else:
+        different = (first != second)
+
+    if different:
         return Diff(Option(section, option, first),
                     Option(section, option, second))
 
 
-def diff(first, second):
+def diff(first, second, ignore_case=False):
     """Diff two ini files."""
     conf_first = conf_from_str(first)
     conf_second = conf_from_str(second)
@@ -59,7 +75,8 @@ def diff(first, second):
                                  list(conf_second.defaults().keys()))
     for option in default_options:
         section = 'DEFAULT'
-        diff = check_option(conf_first, conf_second, section, option)
+        diff = check_option(conf_first, conf_second, section, option,
+                            ignore_case)
         if diff is not None:
             diffs.append(diff)
 
@@ -71,7 +88,8 @@ def diff(first, second):
         options = OrderedSet(conf_first.options(section) +
                              conf_second.options(section))
         for option in options:
-            diff = check_option(conf_first, conf_second, section, option)
+            diff = check_option(conf_first, conf_second, section, option,
+                                ignore_case)
             if diff is not None:
                 diffs.append(diff)
 

@@ -26,6 +26,9 @@ class PermissiveConfigParser(configparser.RawConfigParser):
             value = None
         return value
 
+    def clear_defaults(self):
+        self._defaults = {}
+
 
 def conf_from_str(conf_str):
     """Return a ConfigParser object from a string."""
@@ -59,6 +62,9 @@ def diff(first, second):
         diff = check_option(conf_first, conf_second, section, option)
         if diff is not None:
             diffs.append(diff)
+
+    conf_first.clear_defaults()
+    conf_second.clear_defaults()
 
     sections = OrderedSet(conf_first.sections() + conf_second.sections())
     for section in sections:

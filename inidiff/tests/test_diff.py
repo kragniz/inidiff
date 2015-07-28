@@ -59,6 +59,18 @@ dog=woof
 hello=hi
 '''
 
+INI_11 = '''[DEFAULT]
+dog=woof
+cow=hi
+'''
+
+INI_12 = '''[DEFAULT]
+dog=woof
+
+[new]
+cow=hi
+'''
+
 
 class TestDiff(unittest.TestCase):
     """Test diffs diff things."""
@@ -119,3 +131,15 @@ class TestDiff(unittest.TestCase):
     def test_new_section(self):
         diffs = inidiff.diff(INI_9, INI_10)
         self.assertEqual(6, len(diffs))
+
+    def test_moved_section_from_default(self):
+        diffs = inidiff.diff(INI_11, INI_12)
+        self.assertEqual(2, len(diffs))
+        self.assertEqual('hi', diffs[0].first.value)
+        self.assertEqual(None, diffs[0].second.value)
+
+    def test_moved_section_from_default_reversed(self):
+        diffs = inidiff.diff(INI_12, INI_11)
+        self.assertEqual(2, len(diffs))
+        self.assertEqual(None, diffs[0].first.value)
+        self.assertEqual('hi', diffs[0].second.value)

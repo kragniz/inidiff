@@ -24,7 +24,7 @@ def format_output(first, second, color=True):
     out = ''
     for d in diffs:
         if d.first.section not in sections:
-            out += '[{}]\n'.format(d.first.section)
+            out += '\n[{}]\n'.format(d.first.section)
             sections.add(d.first.section)
         if d.first.value is not None:
             if color:

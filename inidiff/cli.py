@@ -58,7 +58,7 @@ def main():
     second = args.second.read()
 
     out = format_output(first, second, ignore_case=args.ignore_case)
-    print(out, end='')
+    print(out.strip(), end='')
 
     if out:
         sys.exit(1)

@@ -52,12 +52,15 @@ def main():
                         help='Second ini file')
     parser.add_argument('-i', '--ignore-case', action='store_true',
                         help='ignore case for values')
+    parser.add_argument('--no-color', action='store_true',
+                        help='don\'t show color')
     args = parser.parse_args()
 
     first = args.first.read()
     second = args.second.read()
 
-    out = format_output(first, second, ignore_case=args.ignore_case)
+    out = format_output(first, second, color=not args.no_color,
+                        ignore_case=args.ignore_case)
     print(out.strip(), end='')
 
     if out:
